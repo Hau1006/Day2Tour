@@ -1,65 +1,30 @@
 
-import axios from 'axios'
-import React, { useState, useEffect } from 'react'
-import Loading from './Loading'
-import Tours from './Tours'
+import React, { } from 'react'
+import { BrowserRouter as Router,Route, Switch } from 'react-router-dom'
+import Navbar from './components/NavBar/Navbar'
+import Birthday from './pages/birthday/Birthday'
+import Home from './pages/Home/Home'
+import Pagetours from './pages/tours/Pagetours'
+
+
+
 
 
 function App() {
-  const [tours, settours] = useState([]);
-  const [loading, setloading] = useState(true); //loading
-  // remove item tour 
-  const removeTour = (id) => {
-    const newTours = tours.filter((tour)=> tour.id !== id) 
-    settours(newTours)
-  }
-  const getdata = async () => { 
-    setloading(true)
-    try {
-      const rest = await axios.get('https://course-api.com/react-tours-project');
-      if(rest.status === 200){ // check success
-        // console.log(rest.data);
-        setloading(false)
-        settours(rest.data);
-      }
-      
-    } catch (error) {
-      setloading(false);
-      console.log(error);
-      
-    }
-  }
-  useEffect(() => {
-    getdata();
-  }, [])
-  if(loading){
-    return(
-      <main>
-        <Loading/>
-      </main>
-    )
-  }
-  if( tours.length === 0 ) {
-    return (
-      <main>
-        <div className="title">
-          <h2>No tours Left</h2>
-          <button className="btn" onClick={()=>getdata()}>
-            refresh
-          </button>
-        </div>
-      </main>
-    )
-  }
-  
- 
-  return (
-    <>
-      <main>
-        <Tours tours={tours} removeTour={removeTour} />
-      </main>
 
-    </>
+
+  return (
+    <Router>
+      <>
+        <Navbar />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/tours" component={Pagetours} />
+          <Route exact path="/birthday" component={Birthday} />
+        </Switch>
+      </>
+    </Router>
+
   )
 }
 export default App
